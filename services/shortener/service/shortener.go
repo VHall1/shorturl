@@ -22,7 +22,8 @@ func NewUrlShortenerService(urlStore *store.UrlStore) *ShortenerService {
 }
 
 func (s *ShortenerService) ShortenUrl(ctx context.Context, longUrl string) (string, error) {
-	req, err := http.NewRequest(http.MethodGet, "/", nil)
+	// TODO: pull this from somewhere else
+	req, err := http.NewRequest(http.MethodGet, "http://shorturl-snowflake/", nil)
 	if err != nil {
 		return "", err
 	}
