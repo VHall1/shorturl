@@ -47,20 +47,15 @@ func (s *ShortenerService) ShortenUrl(ctx context.Context, longUrl string) (stri
 		return "", err
 	}
 
-	var jsonRes map[string]string
+	var jsonRes *struct{ Id int64 }
 	err = json.NewDecoder(res.Body).Decode(&jsonRes)
 	if err != nil {
 		return "", err
 	}
 
-	id, err := strconv.ParseInt(jsonRes["id"], 10, 64)
-	if err != nil {
-		return "", err
-	}
-
-	shortUrl = Base62(id)
+	shortUrl := Base62(jsonRes.Id)
 	err = s.urlStore.Create(ctx, &types.UrlDto{
-		Id:       id,
+		Id:       jsonRes.Id,
 		ShortUrl: shortUrl,
 		LongUrl:  longUrl,
 	})
