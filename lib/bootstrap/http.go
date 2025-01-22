@@ -22,6 +22,8 @@ type httpServerConf struct {
 	HttpAddr string
 }
 
+// Creates a new HTTP server struct. The server address is read
+// from the HTTP_ADDR env variable
 func NewHttpServer() (*HttpServer, error) {
 	conf := &httpServerConf{}
 	if err := config.Load(conf); err != nil {
