@@ -7,15 +7,15 @@ import (
 	"github.com/vhall1/shorturl/services/shortener/types"
 )
 
-type SnowflakeHttpHandler struct {
+type ShortenerHttpHandler struct {
 	shortenerService types.ShortenerService
 }
 
-func NewSnowflakeHttpHandler(shortenerService types.ShortenerService) *SnowflakeHttpHandler {
-	return &SnowflakeHttpHandler{shortenerService: shortenerService}
+func NewShortenerHttpHandler(shortenerService types.ShortenerService) *ShortenerHttpHandler {
+	return &ShortenerHttpHandler{shortenerService: shortenerService}
 }
 
-func (h *SnowflakeHttpHandler) RegisterRoutes(mux *http.ServeMux) {
+func (h *ShortenerHttpHandler) RegisterRoutes(mux *http.ServeMux) {
 	mux.Handle("GET /s/{shortUrl}", HandleGetLongUrl(h.shortenerService))
 	mux.Handle("POST /", HandlePostShortenUrl(h.shortenerService))
 }

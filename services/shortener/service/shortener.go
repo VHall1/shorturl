@@ -15,7 +15,7 @@ type ShortenerService struct {
 	urlStore *store.UrlStore
 }
 
-func NewUrlShortenerService(urlStore *store.UrlStore) *ShortenerService {
+func NewShortenerService(urlStore *store.UrlStore) *ShortenerService {
 	return &ShortenerService{
 		urlStore: urlStore,
 	}
