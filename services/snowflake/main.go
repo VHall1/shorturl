@@ -4,6 +4,8 @@ import (
 	"log"
 
 	"github.com/vhall1/shorturl/lib/bootstrap"
+	"github.com/vhall1/shorturl/services/snowflake/handler"
+	"github.com/vhall1/shorturl/services/snowflake/service"
 )
 
 func main() {
@@ -11,6 +13,14 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	s, err := service.NewSnowflake(int64(0))
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	h := handler.NewSnowflakeHttpHandler(s)
+	h.RegisterRoutes(httpServer.Mux)
 
 	if err := httpServer.Start(); err != nil {
 		log.Fatal(err)
