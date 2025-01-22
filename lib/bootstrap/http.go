@@ -19,7 +19,7 @@ type HttpServer struct {
 }
 
 type httpServerConf struct {
-	HttpAddr string
+	HttpAddr string `envconfig:"optional"`
 }
 
 // Creates a new HTTP server struct, it also exposes a new mux
@@ -31,8 +31,15 @@ func NewHttpServer() (*HttpServer, error) {
 	}
 
 	mux := http.NewServeMux()
+
+	addr := conf.HttpAddr
+	// bind to port 80 by default
+	if addr == "" {
+		addr = ":80"
+	}
+
 	server := &http.Server{
-		Addr:    conf.HttpAddr,
+		Addr:    addr,
 		Handler: mux,
 	}
 
