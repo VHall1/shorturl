@@ -9,8 +9,18 @@ services:
   shortener:
     depends_on:
       - snowflake
+      - shortener-psql
     build:
       context: .
       dockerfile: ./services/shortener/Dockerfile
     ports:
       - 8000:8000
+
+  shortener-psql:
+    image: postgres
+    restart: always
+    shm_size: 128mb
+    environment:
+      - POSTGRES_PASSWORD=pw
+    ports:
+      - 5432:5432
