@@ -22,14 +22,14 @@ func NewUrlShortenerService(urlStore *store.UrlStore) *ShortenerService {
 }
 
 func (s *ShortenerService) ShortenUrl(ctx context.Context, longUrl string) (string, error) {
+	ctx, cancel := context.WithTimeout(ctx, time.Second*2)
+	defer cancel()
+
 	// TODO: pull this from somewhere else
-	req, err := http.NewRequest(http.MethodGet, "http://shorturl-snowflake/", nil)
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, "http://shorturl-snowflake/", nil)
 	if err != nil {
 		return "", err
 	}
-
-	ctx, cancel := context.WithTimeout(ctx, time.Second*2)
-	defer cancel()
 
 	// do we have this url in the db already?
 	shortUrl, err := s.urlStore.GetShortUrl(ctx, longUrl)
@@ -42,7 +42,6 @@ func (s *ShortenerService) ShortenUrl(ctx context.Context, longUrl string) (stri
 		return shortUrl, nil
 	}
 
-	req = req.WithContext(ctx)
 	res, err := http.DefaultClient.Do(req)
 	if err != nil {
 		return "", err
