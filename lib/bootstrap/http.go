@@ -15,15 +15,15 @@ import (
 
 type HttpServer struct {
 	Mux    *http.ServeMux
-	Server *http.Server
+	server *http.Server
 }
 
 type httpServerConf struct {
 	HttpAddr string
 }
 
-// Creates a new HTTP server struct. The server address is read
-// from the HTTP_ADDR env variable
+// Creates a new HTTP server struct, it also exposes a new mux
+// that can be used for routing. The server address is read from the HTTP_ADDR env variable
 func NewHttpServer() (*HttpServer, error) {
 	conf := &httpServerConf{}
 	if err := config.Load(conf); err != nil {
@@ -38,7 +38,7 @@ func NewHttpServer() (*HttpServer, error) {
 
 	return &HttpServer{
 		Mux:    mux,
-		Server: server,
+		server: server,
 	}, nil
 }
 
@@ -57,14 +57,14 @@ func (s *HttpServer) Start() error {
 		ctx, release := context.WithTimeout(context.Background(), time.Second*10)
 		defer release()
 
-		if err := s.Server.Shutdown(ctx); err != nil {
+		if err := s.server.Shutdown(ctx); err != nil {
 			ch <- fmt.Errorf("got an error while trying to gracefully shutdown http server: %v", err)
 		}
 	}()
 
 	go func() {
-		log.Printf("HTTP server listening on %s\n", s.Server.Addr)
-		ch <- s.Server.ListenAndServe()
+		log.Printf("HTTP server listening on %s\n", s.server.Addr)
+		ch <- s.server.ListenAndServe()
 	}()
 
 	err := <-ch
