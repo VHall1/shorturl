@@ -14,7 +14,7 @@ services:
       context: .
       dockerfile: ./services/shortener/Dockerfile
     environment:
-      - DATABASE_URL=postgres://postgres:pw@localhost:5432/service-shortener?sslmode=disable
+      - DATABASE_URL=postgres://postgres:pw@shortener-psql:5432/shortener?sslmode=disable
     ports:
       - 8000:80
 
