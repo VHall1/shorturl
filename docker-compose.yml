@@ -1,7 +1,16 @@
 services:
   snowflake:
-    build: 
+    build:
       context: .
       dockerfile: ./services/snowflake/Dockerfile
     ports:
-      - 80:8080
+      - 8001:8001
+
+  shortener:
+    depends_on:
+      - snowflake
+    build:
+      context: .
+      dockerfile: ./services/shortener/Dockerfile
+    ports:
+      - 8000:8000
