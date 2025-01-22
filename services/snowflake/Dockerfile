@@ -9,6 +9,6 @@ COPY go.mod go.sum ./
 RUN go mod download && go mod verify
 
 COPY . .
-RUN go build -v -o /usr/local/bin/app ./services/snowflake/...
+RUN go build -o /usr/local/bin/app ./services/snowflake/
 
 CMD ["app"]
