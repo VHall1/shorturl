@@ -1,0 +1,9 @@
+services:
+  snowflake:
+    build: 
+      context: .
+      dockerfile: ./services/snowflake/Dockerfile
+    ports:
+      - 80:8080
+    environment:
+      - HTTP_ADDR=:80
