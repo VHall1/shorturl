@@ -1,4 +1,4 @@
-# Snoflake
+# Snowflake
 
 Snowflake is a simple ID generator based on [Twitter's snowflakes](https://en.wikipedia.org/wiki/Snowflake_ID).
 
