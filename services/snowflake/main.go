@@ -14,6 +14,7 @@ func main() {
 		log.Fatal(err)
 	}
 
+	// TODO: dinamically generate machine IDs
 	s, err := service.NewSnowflake(int64(0))
 	if err != nil {
 		log.Fatal(err)
