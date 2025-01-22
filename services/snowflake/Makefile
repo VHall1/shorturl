@@ -1,3 +1,3 @@
 .PHONY: run
 run:
-	@GO_ENV=development go run ./*.go
+	@go run ./*.go
