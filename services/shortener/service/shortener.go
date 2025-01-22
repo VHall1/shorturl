@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"net/http"
-	"strconv"
 	"time"
 
 	"github.com/vhall1/shorturl/services/shortener/store"
@@ -26,15 +25,15 @@ func (s *ShortenerService) ShortenUrl(ctx context.Context, longUrl string) (stri
 	defer cancel()
 
 	// do we have this url in the db already?
-	shortUrl, err := s.urlStore.GetShortUrl(ctx, longUrl)
-	if err != nil {
-		return "", err
-	}
+	// shortUrl, err := s.urlStore.GetShortUrl(ctx, longUrl)
+	// if err != nil {
+	// 	return "", err
+	// }
 
 	// url already stored in the db, return that instead of storing a new copy
-	if shortUrl != "" {
-		return shortUrl, nil
-	}
+	// if shortUrl != "" {
+	// 	return shortUrl, nil
+	// }
 
 	// TODO: pull this from somewhere else
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, "http://snowflake/", nil)
