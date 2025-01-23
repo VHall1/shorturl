@@ -6,6 +6,12 @@ import (
 	"time"
 )
 
+/* TODO:
+- Add a helper function to generate the machine ID
+- Need to ensure clock sync between instances to avoid possible collisions. Could use something like NTP to get more accurate times
+- Might also consider adding more logging here, especially if implementing NTP
+*/
+
 // https://en.wikipedia.org/wiki/Snowflake_ID
 const (
 	epoch          int64 = 1735689601 // Jan 1st, 2025 00:00:01 GMT+0000
@@ -36,7 +42,7 @@ func NewSnowflake(machineId int64) (*Snowflake, error) {
 	}, nil
 }
 
-func (s *Snowflake) Snowflake() int64 {
+func (s *Snowflake) Generate() int64 {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
