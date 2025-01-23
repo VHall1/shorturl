@@ -29,7 +29,7 @@ func NewGrpcServer() (*GrpcServer, error) {
 
 	addr := conf.GrpcAddr
 	if addr == "" {
-		log.Printf("[gRPC] no address set. Using :50051 fallback\n")
+		log.Printf("[gRPC] no address set. Using fallback :50051\n")
 		addr = ":50051"
 	}
 
