@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/vhall1/shorturl/lib/bootstrap"
+	"github.com/vhall1/shorturl/services/snowflake/handler"
 	"github.com/vhall1/shorturl/services/snowflake/types"
 )
 
@@ -21,8 +22,7 @@ func (s *GrpcServer) Start() error {
 		return err
 	}
 
-	// h := handler.NewSnowflakeHttpHandler(s.snowflakeService)
-	// h.RegisterRoutes(httpServer.Mux)
+	handler.NewSnowflakeGrpcHandler(grpcServer.Server, s.snowflakeService)
 
 	return grpcServer.Start()
 }
