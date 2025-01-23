@@ -1,7 +1,6 @@
 package bootstrap
 
 import (
-	"fmt"
 	"log"
 	"net"
 	"os"
@@ -30,7 +29,7 @@ func NewGrpcServer() (*GrpcServer, error) {
 
 	addr := conf.GrpcAddr
 	if addr == "" {
-		fmt.Printf("[gRPC] no address set. Using :50051 fallback\n")
+		log.Printf("[gRPC] no address set. Using :50051 fallback\n")
 		addr = ":50051"
 	}
 
@@ -53,7 +52,7 @@ func (s *GrpcServer) Start() error {
 		sigs := make(chan os.Signal, 1)
 		signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM)
 		<-sigs
-		fmt.Println("[gRPC] Shutdown signal received. Gracefully shutting down server")
+		log.Println("[gRPC] Shutdown signal received. Gracefully shutting down server")
 		s.Server.GracefulStop()
 	}()
 
