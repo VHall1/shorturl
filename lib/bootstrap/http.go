@@ -35,6 +35,7 @@ func NewHttpServer() (*HttpServer, error) {
 	addr := conf.HttpAddr
 	// bind to port 80 by default
 	if addr == "" {
+		log.Printf("[HTTP] no address set. Using fallback :80\n")
 		addr = ":80"
 	}
 
@@ -59,7 +60,7 @@ func (s *HttpServer) Start() error {
 		signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM)
 		<-sigs
 
-		fmt.Println("Shutdown signal received. Gracefully shutting down http server")
+		log.Println("[HTTP] Shutdown signal received. Gracefully shutting down server")
 
 		ctx, release := context.WithTimeout(context.Background(), time.Second*10)
 		defer release()
@@ -70,7 +71,7 @@ func (s *HttpServer) Start() error {
 	}()
 
 	go func() {
-		log.Printf("HTTP server listening on %s\n", s.server.Addr)
+		log.Printf("[HTTP] Server listening on %s\n", s.server.Addr)
 		ch <- s.server.ListenAndServe()
 	}()
 
