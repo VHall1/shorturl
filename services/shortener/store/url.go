@@ -3,6 +3,7 @@ package store
 import (
 	"context"
 	"database/sql"
+	"errors"
 	"fmt"
 
 	"github.com/vhall1/shorturl/services/shortener/types"
@@ -37,7 +38,7 @@ func (s *UrlStore) FindByLongUrl(ctx context.Context, longUrl string) (string, e
 	row := s.db.QueryRowContext(ctx, q, longUrl)
 
 	var shortUrl string
-	if err := row.Scan(&shortUrl); err != nil {
+	if err := row.Scan(&shortUrl); err != nil && !errors.Is(err, sql.ErrNoRows) {
 		return "", err
 	}
 
