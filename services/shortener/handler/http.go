@@ -16,11 +16,11 @@ func NewShortenerHttpHandler(shortenerService types.ShortenerService) *Shortener
 }
 
 func (h *ShortenerHttpHandler) RegisterRoutes(mux *http.ServeMux) {
-	mux.Handle("GET /s/{shortUrl}", HandleGetLongUrl(h.shortenerService))
-	mux.Handle("POST /", HandlePostShortenUrl(h.shortenerService))
+	mux.Handle("GET /s/{shortUrl}", h.HandleGetLongUrl(h.shortenerService))
+	mux.Handle("POST /", h.HandlePostShortenUrl(h.shortenerService))
 }
 
-func HandleGetLongUrl(shortenerService types.ShortenerService) http.Handler {
+func (*ShortenerHttpHandler) HandleGetLongUrl(shortenerService types.ShortenerService) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		shortUrl := r.PathValue("shortUrl")
 
@@ -34,7 +34,7 @@ func HandleGetLongUrl(shortenerService types.ShortenerService) http.Handler {
 	})
 }
 
-func HandlePostShortenUrl(shortenerService types.ShortenerService) http.Handler {
+func (*ShortenerHttpHandler) HandlePostShortenUrl(shortenerService types.ShortenerService) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		var req map[string]string
 		if err := util.ParseJSON(r, &req); err != nil {
