@@ -9,11 +9,11 @@ type UrlDto struct {
 
 type UrlStore interface {
 	Create(context.Context, *UrlDto) error
-	GetLongUrl(context.Context, string) (string, error)
-	GetShortUrl(context.Context, string) (string, error)
+	FindByLongUrl(context.Context, string) (string, error)
+	FindByShortUrl(context.Context, string) (string, error)
 }
 
 type ShortenerService interface {
 	ShortenUrl(context.Context, string) (string, error)
-	GetLongUrl(context.Context, string) (string, error)
+	GetRedirectUrl(context.Context, string) (string, error)
 }

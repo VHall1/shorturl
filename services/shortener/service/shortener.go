@@ -25,17 +25,16 @@ func (s *ShortenerService) ShortenUrl(ctx context.Context, longUrl string) (stri
 	defer cancel()
 
 	// do we have this url in the db already?
-	// shortUrl, err := s.urlStore.GetShortUrl(ctx, longUrl)
-	// if err != nil {
-	// 	return "", err
-	// }
+	shortUrl, err := s.urlStore.FindByLongUrl(ctx, longUrl)
+	if err != nil {
+		return "", err
+	}
 
 	// url already stored in the db, return that instead of storing a new copy
-	// if shortUrl != "" {
-	// 	return shortUrl, nil
-	// }
+	if shortUrl != "" {
+		return shortUrl, nil
+	}
 
-	// TODO: pull this from somewhere else
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, "http://snowflake/", nil)
 	if err != nil {
 		return "", err
@@ -52,7 +51,8 @@ func (s *ShortenerService) ShortenUrl(ctx context.Context, longUrl string) (stri
 		return "", err
 	}
 
-	shortUrl := Base62(jsonRes.Id)
+	shortUrl = Base62(jsonRes.Id)
+
 	err = s.urlStore.Create(ctx, &types.UrlDto{
 		Id:       jsonRes.Id,
 		ShortUrl: shortUrl,
@@ -65,8 +65,8 @@ func (s *ShortenerService) ShortenUrl(ctx context.Context, longUrl string) (stri
 	return shortUrl, nil
 }
 
-func (s *ShortenerService) GetLongUrl(ctx context.Context, shortUrl string) (string, error) {
-	longUrl, err := s.urlStore.GetLongUrl(ctx, shortUrl)
+func (s *ShortenerService) GetRedirectUrl(ctx context.Context, shortUrl string) (string, error) {
+	longUrl, err := s.urlStore.FindByShortUrl(ctx, shortUrl)
 
 	if err != nil {
 		return "", err
