@@ -29,17 +29,18 @@ function makeRequest(
   return fetch(`${SERVICE_URL}${path}`, requestInit);
 }
 
-async function getShortUrl(longUrl: string): Promise<string> {
+type JSONResponse = {
+  url?: string;
+  error?: string;
+};
+
+async function shortenUrl(longUrl: string): Promise<string> {
   const response = await makeRequest("/", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ url: longUrl }),
   });
 
-  type JSONResponse = {
-    url?: string;
-    error?: string;
-  };
   const { url, error }: JSONResponse = await response.json();
 
   if (!response.ok) {
@@ -53,4 +54,19 @@ async function getShortUrl(longUrl: string): Promise<string> {
   return url;
 }
 
-export { getShortUrl };
+async function getRedirectUrl(shortUrl: string): Promise<string> {
+  const response = await makeRequest(`/s/${shortUrl}`, { method: "GET" });
+  const { url, error }: JSONResponse = await response.json();
+
+  if (!response.ok) {
+    return Promise.reject(new Error(error ?? "unhandled api error"));
+  }
+
+  if (!url) {
+    return Promise.reject(new Error("api did not return a url"));
+  }
+
+  return url;
+}
+
+export { shortenUrl, getRedirectUrl };
