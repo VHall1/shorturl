@@ -8,7 +8,7 @@ import (
 
 func main() {
 	// TODO: dinamically generate machine IDs
-	svc, err := service.NewSnowflake(int64(0))
+	svc, err := service.NewSnowflake(0)
 	if err != nil {
 		panic(err)
 	}
