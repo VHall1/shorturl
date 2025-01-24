@@ -1,4 +1,13 @@
 services:
+  next-app:
+    depends_on:
+      - shortener
+    build:
+      context: .
+      dockerfile: ./next-app/Dockerfile
+    ports:
+      - 3000:3000
+
   snowflake:
     build:
       context: .
