@@ -57,14 +57,14 @@ func TestSnowflake_Generate(t *testing.T) {
 	t.Run("wait for next millisecond", func(t *testing.T) {
 		// mock sequence overflow
 		svc.sequence = maxSequence
-		svc.lastTime = time.Now().UnixMilli()
 
-		start := time.Now()
+		now := time.Now().UnixMilli()
+		svc.lastTime = now
+
 		svc.Generate()
-		elapsed := time.Since(start)
 
-		if elapsed < time.Millisecond {
-			t.Errorf("expected a wait of at least 1 millisecond, got %v", elapsed)
+		if svc.lastTime <= now {
+			t.Errorf("expected wait until the next millisecond, got %v and %v", now, svc.lastTime)
 		}
 	})
 }
