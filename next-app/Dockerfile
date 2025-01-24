@@ -1,20 +1,14 @@
-FROM node:22 AS builder
+# https://docs.docker.com/guides/nodejs/containerize/
 
-WORKDIR /app
+FROM node:22.8-alpine
 
-COPY ./next-app/ .
+WORKDIR /usr/src/app
 
-RUN npm ci
+RUN --mount=type=bind,source=package.json,target=package.json \
+    --mount=type=bind,source=package-lock.json,target=package-lock.json \
+    --mount=type=cache,target=/root/.npm \
+    npm ci
 
-RUN npm run build
+COPY . .
 
-FROM node:22-alpine AS runner
-
-WORKDIR /app
-
-COPY --from=builder /app/package*.json ./
-COPY --from=builder /app/.next ./.next
-COPY --from=builder /app/public ./public
-COPY --from=builder /app/node_modules ./node_modules
-
-CMD ["npm", "run", "start"]
+CMD ["npm", "run", "dev", "--", "-H", "0.0.0.0"]
