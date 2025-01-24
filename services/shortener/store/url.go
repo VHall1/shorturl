@@ -24,7 +24,7 @@ func (s *UrlStore) Create(ctx context.Context, urlDto *types.UrlDto) error {
 		VALUES ($1, $2, $3)
 	`, tableName)
 
-	_, err := s.db.Exec(q, urlDto.Id, urlDto.ShortUrl, urlDto.LongUrl)
+	_, err := s.db.ExecContext(ctx, q, urlDto.Id, urlDto.ShortUrl, urlDto.LongUrl)
 	if err != nil {
 		return err
 	}
@@ -32,34 +32,26 @@ func (s *UrlStore) Create(ctx context.Context, urlDto *types.UrlDto) error {
 	return nil
 }
 
-func (s *UrlStore) GetLongUrl(ctx context.Context, shortUrl string) (string, error) {
-	var longUrl string
-
-	// tableName is a hardcoded const and doesn't come from user input, so should be safe
-	// to do simple string interpolation here
-	q := fmt.Sprintf(`SELECT "longUrl" FROM "%s" WHERE "shortUrl" = $1`, tableName)
-	// TODO: actually do something with ctx
-	row := s.db.QueryRow(q, shortUrl)
-
-	if err := row.Scan(&longUrl); err != nil {
-		return "", err
-	}
-
-	return longUrl, nil
-}
-
-func (s *UrlStore) GetShortUrl(ctx context.Context, longUrl string) (string, error) {
-	var shortUrl string
-
-	// tableName is a hardcoded const and doesn't come from user input, so should be safe
-	// to do simple string interpolation here
+func (s *UrlStore) FindByLongUrl(ctx context.Context, longUrl string) (string, error) {
 	q := fmt.Sprintf(`SELECT "shortUrl" FROM "%s" WHERE "longUrl" = $1`, tableName)
-	// TODO: actually do something with ctx
-	row := s.db.QueryRow(q, longUrl)
+	row := s.db.QueryRowContext(ctx, q, longUrl)
 
+	var shortUrl string
 	if err := row.Scan(&shortUrl); err != nil {
 		return "", err
 	}
 
 	return shortUrl, nil
+}
+
+func (s *UrlStore) FindByShortUrl(ctx context.Context, shortUrl string) (string, error) {
+	q := fmt.Sprintf(`SELECT "longUrl" FROM "%s" WHERE "shortUrl" = $1`, tableName)
+	row := s.db.QueryRowContext(ctx, q, shortUrl)
+
+	var longUrl string
+	if err := row.Scan(&longUrl); err != nil {
+		return "", err
+	}
+
+	return longUrl, nil
 }
