@@ -16,12 +16,12 @@ func NewSnowflakeHttpHandler(snowflakeService types.Snowflake) *SnowflakeHttpHan
 }
 
 func (h *SnowflakeHttpHandler) RegisterRoutes(mux *http.ServeMux) {
-	mux.Handle("GET /", h.HandleGetSnowflake())
+	mux.Handle("GET /", h.HandleGetSnowflake(h.snowflakeService))
 }
 
-func (h *SnowflakeHttpHandler) HandleGetSnowflake() http.Handler {
+func (*SnowflakeHttpHandler) HandleGetSnowflake(snowflakeService types.Snowflake) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		id := h.snowflakeService.Generate()
-		util.WriteJSON(w, http.StatusOK, &map[string]any{"id": id})
+		id := snowflakeService.Generate()
+		util.WriteJSON(w, http.StatusOK, &map[string]interface{}{"id": id})
 	})
 }
