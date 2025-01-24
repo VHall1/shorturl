@@ -1,4 +1,4 @@
-name: Deploy
+name: 🚢 Build Images
 on:
   workflow_dispatch:
   push:
@@ -10,12 +10,12 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  deploy:
+  build:
     runs-on: self-hosted
 
     steps:
       - name: ⬇️ Checkout repo
         uses: actions/checkout@v4
 
-      - name: ⎔ Build docker image
+      - name: ⎔ Build docker images
         run: docker compose build
