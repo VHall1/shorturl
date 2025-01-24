@@ -1,3 +1,7 @@
 .PHONY: run
 run:
-	@go run ./*.go
+	@go run ./...
+
+.PHONY: test
+test:
+	@go test ./...
