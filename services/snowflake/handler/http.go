@@ -22,6 +22,6 @@ func (h *SnowflakeHttpHandler) RegisterRoutes(mux *http.ServeMux) {
 func (*SnowflakeHttpHandler) HandleGetSnowflake(snowflakeService types.Snowflake) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		id := snowflakeService.Generate()
-		util.WriteJSON(w, http.StatusOK, &map[string]interface{}{"id": int64(id)})
+		util.WriteJSON(w, http.StatusOK, &map[string]interface{}{"id": id})
 	})
 }
