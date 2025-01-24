@@ -20,11 +20,6 @@ func main() {
 		ch <- s.Start()
 	}()
 
-	go func() {
-		s := NewGrpcServer(snowflake)
-		ch <- s.Start()
-	}()
-
 	err = <-ch
 	if err != nil {
 		log.Fatal(err)
