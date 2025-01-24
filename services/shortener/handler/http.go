@@ -24,13 +24,13 @@ func (*ShortenerHttpHandler) HandleGetLongUrl(shortenerService types.ShortenerSe
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		shortUrl := r.PathValue("shortUrl")
 
-		longUrl, err := shortenerService.GetLongUrl(r.Context(), shortUrl)
+		longUrl, err := shortenerService.GetRedirectUrl(r.Context(), shortUrl)
 		if err != nil {
 			util.WriteError(w, http.StatusInternalServerError, err)
 			return
 		}
 
-		util.WriteJSON(w, http.StatusOK, &map[string]string{"url": longUrl})
+		util.WriteJSON(w, http.StatusOK, &map[string]interface{}{"url": longUrl})
 	})
 }
 
@@ -48,6 +48,6 @@ func (*ShortenerHttpHandler) HandlePostShortenUrl(shortenerService types.Shorten
 			return
 		}
 
-		util.WriteJSON(w, http.StatusOK, &map[string]string{"url": shortUrl})
+		util.WriteJSON(w, http.StatusOK, &map[string]interface{}{"url": shortUrl})
 	})
 }

@@ -15,5 +15,5 @@ type UrlStore interface {
 
 type ShortenerService interface {
 	ShortenUrl(context.Context, string) (string, error)
-	GetLongUrl(context.Context, string) (string, error)
+	GetRedirectUrl(context.Context, string) (string, error)
 }
