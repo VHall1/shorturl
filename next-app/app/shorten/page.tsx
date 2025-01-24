@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { getRedirectUrl } from "@/lib/url-shortener";
+import { shortenUrl } from "@/lib/url-shortener";
 import Link from "next/link";
 import { ShortUrlBox } from "./short-url-box";
 
@@ -9,7 +9,7 @@ export default async function Shorten({
   searchParams: Promise<{ [key: string]: string | undefined }>;
 }) {
   const longUrl = (await searchParams).url ?? "";
-  const shortUrl = await getRedirectUrl(longUrl);
+  const shortUrl = await shortenUrl(longUrl);
 
   return (
     <div>
