@@ -1,8 +1,6 @@
 package main
 
 import (
-	"log"
-
 	"github.com/vhall1/shorturl/lib/bootstrap"
 	"github.com/vhall1/shorturl/services/shortener/handler"
 	"github.com/vhall1/shorturl/services/shortener/service"
@@ -10,22 +8,22 @@ import (
 )
 
 func main() {
-	httpServer, err := bootstrap.NewHttpServer()
+	http, err := bootstrap.NewHttpServer()
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
 	}
 
 	psql, err := bootstrap.NewPostgres()
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
 	}
 
 	store := store.NewUrlStore(psql)
 	svc := service.NewShortenerService(store)
 	h := handler.NewShortenerHttpHandler(svc)
-	h.RegisterRoutes(httpServer.Mux)
+	h.RegisterRoutes(http.Mux)
 
-	if err := httpServer.Start(); err != nil {
-		log.Fatal(err)
+	if err := http.Start(); err != nil {
+		panic(err)
 	}
 }
