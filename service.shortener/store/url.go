@@ -27,7 +27,7 @@ func (s *UrlStore) Create(ctx context.Context, url *common.Url) error {
 }
 
 func (s *UrlStore) FindByLongUrl(ctx context.Context, longUrl string) (string, error) {
-	row := s.db.QueryRowContext(ctx, "SELECT * FROM url WHERE longUrl = ?", longUrl)
+	row := s.db.QueryRowContext(ctx, "SELECT id, shortUrl, longUrl FROM url WHERE longUrl = ?", longUrl)
 
 	url, err := scanIntoUrl(row)
 	if err != nil {
@@ -38,7 +38,7 @@ func (s *UrlStore) FindByLongUrl(ctx context.Context, longUrl string) (string, e
 }
 
 func (s *UrlStore) FindByShortUrl(ctx context.Context, shortUrl string) (string, error) {
-	row := s.db.QueryRowContext(ctx, "SELECT * FROM url WHERE shortUrl = ?", shortUrl)
+	row := s.db.QueryRowContext(ctx, "SELECT id, shortUrl, longUrl FROM url WHERE shortUrl = ?", shortUrl)
 
 	url, err := scanIntoUrl(row)
 	if err != nil {
@@ -51,7 +51,7 @@ func (s *UrlStore) FindByShortUrl(ctx context.Context, shortUrl string) (string,
 func scanIntoUrl(row *sql.Row) (*common.Url, error) {
 	url := new(common.Url)
 
-	if err := row.Scan(&url.Id, &url.LongUrl, &url.ShortUrl); err != nil {
+	if err := row.Scan(&url.Id, &url.ShortUrl, &url.LongUrl); err != nil {
 		return nil, err
 	}
 
