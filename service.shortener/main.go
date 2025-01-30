@@ -7,11 +7,16 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
+
+	"github.com/vhall1/shorturl/service.shortener/handler"
 )
 
 func main() {
 	addr := ":8080"
 	mux := http.NewServeMux()
+
+	handler.RegisterRoutes(mux)
+
 	srv := &http.Server{
 		Addr:    addr,
 		Handler: mux,
