@@ -10,6 +10,8 @@ func main() {
 	httpServer := bootstrap.NewHttpServer(":8080")
 
 	// initialise all services
+
+	// TODO: dynamically generate machine id on service startup
 	snowflakeService, err := domain.NewSnowflakeService(0)
 	if err != nil {
 		panic(err)
