@@ -1,6 +1,9 @@
 services:
   mysql:
     image: mysql
+    volumes:
+      # Read service schema and init database (if required)
+      - ./service.shortener/db/schema.sql:/docker-entrypoint-initdb.d/schema.sql
     environment:
       MYSQL_ROOT_PASSWORD: pw
       MYSQL_DATABASE: shorturl
