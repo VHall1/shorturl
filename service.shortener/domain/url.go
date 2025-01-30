@@ -2,18 +2,18 @@ package domain
 
 import "context"
 
-type URL struct {
-	ID                int64
-	ShortURL, LongURL string
+type Url struct {
+	Id                int64
+	ShortUrl, LongUrl string
 }
 
-type URLService struct{}
+type UrlService struct{}
 
-func NewURLService() *URLService {
-	return &URLService{}
+func NewUrlService() *UrlService {
+	return &UrlService{}
 }
 
 // TODO: Implement this
-func (s *URLService) ShortenURL(ctx context.Context, longURL string) (string, error) {
+func (s *UrlService) ShortenUrl(ctx context.Context, longUrl string) (string, error) {
 	return "14q60P", nil
 }
