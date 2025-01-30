@@ -2,6 +2,8 @@ package domain
 
 import (
 	"context"
+	"database/sql"
+	"errors"
 
 	"github.com/vhall1/shorturl/service.shortener/common"
 	"github.com/vhall1/shorturl/service.shortener/store"
@@ -15,13 +17,19 @@ func NewUrlService(urlStore *store.UrlStore) *UrlService {
 	return &UrlService{urlStore: urlStore}
 }
 
-// TODO: Implement this
 func (s *UrlService) ShortenUrl(ctx context.Context, longUrl string) (string, error) {
-	shortUrl := "14q60P"
+	shortUrl, err := s.urlStore.FindByLongUrl(ctx, longUrl)
 
-	err := s.urlStore.Create(ctx, &common.Url{
+	if err != nil && !errors.Is(err, sql.ErrNoRows) {
+		return "", err
+	} else if shortUrl != "" {
+		return shortUrl, nil
+	}
+
+	// TODO: implement snowflake
+	err = s.urlStore.Create(ctx, &common.Url{
 		Id:       1,
-		ShortUrl: shortUrl,
+		ShortUrl: "short-url-here",
 		LongUrl:  longUrl,
 	})
 
