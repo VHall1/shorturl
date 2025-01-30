@@ -14,7 +14,7 @@ services:
       context: .
       dockerfile: ./service.shortener/Dockerfile
     environment:
-      - DATABASE_URL=root:pw@/shorturl
+      - DATABASE_URL=root:pw@tcp(mysql:3306)/shorturl
     ports:
       - 8000:8080
 
