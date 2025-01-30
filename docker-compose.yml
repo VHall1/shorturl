@@ -1,4 +1,14 @@
 services:
+  next-app:
+    depends_on:
+      - shortener
+    build: ./next-app
+    volumes:
+      - ./next-app:/usr/src/app
+      - /usr/src/app/node_modules/
+    ports:
+      - 3000:3000
+
   snowflake:
     build:
       context: .
