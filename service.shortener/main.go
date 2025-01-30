@@ -16,8 +16,10 @@ func main() {
 	httpServer := bootstrap.NewHttpServer(":8080")
 
 	// initialise all services
+	snowflakeService := domain.NewSnowflakeService("http://shorturl-snowflake/")
+
 	urlStore := store.NewUrlStore(db)
-	urlService := domain.NewUrlService(urlStore)
+	urlService := domain.NewUrlService(urlStore, snowflakeService)
 
 	// register routes
 	handler.RegisterRoutes(httpServer.Mux, urlService)

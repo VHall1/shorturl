@@ -9,8 +9,9 @@ import (
 )
 
 func TestUrlService(t *testing.T) {
-	s := store.NewUrlStore(&sql.DB{})
-	svc := NewUrlService(s)
+	str := store.NewUrlStore(&sql.DB{})
+	snow := NewSnowflakeService("http://snowflake/")
+	svc := NewUrlService(str, snow)
 
 	shortUrl, err := svc.ShortenUrl(context.Background(), "example.com")
 	if err != nil {

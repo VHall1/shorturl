@@ -11,10 +11,15 @@ import (
 
 type UrlService struct {
 	urlStore *store.UrlStore
+
+	snowflakeService *SnowflakeService
 }
 
-func NewUrlService(urlStore *store.UrlStore) *UrlService {
-	return &UrlService{urlStore: urlStore}
+func NewUrlService(urlStore *store.UrlStore, snowflakeService *SnowflakeService) *UrlService {
+	return &UrlService{
+		urlStore:         urlStore,
+		snowflakeService: snowflakeService,
+	}
 }
 
 func (s *UrlService) ShortenUrl(ctx context.Context, longUrl string) (string, error) {
@@ -26,9 +31,14 @@ func (s *UrlService) ShortenUrl(ctx context.Context, longUrl string) (string, er
 		return shortUrl, nil
 	}
 
-	// TODO: implement snowflake
+	id, err := s.snowflakeService.Generate(ctx)
+	if err != nil {
+		return "", err
+	}
+
 	err = s.urlStore.Create(ctx, &common.Url{
-		Id:       1,
+		Id: id,
+		// TODO: implement base62 encode
 		ShortUrl: "short-url-here",
 		LongUrl:  longUrl,
 	})
