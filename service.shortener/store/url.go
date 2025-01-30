@@ -17,15 +17,11 @@ func NewUrlStore(db *sql.DB) *UrlStore {
 
 func (s *UrlStore) Create(ctx context.Context, url *common.Url) error {
 	q := `
-		INSERT INTO "url" ("id", "shortUrl", "longUrl")
-		VALUES (:id, :shortUrl, :longUrl)
+		INSERT INTO url (id, shortUrl, longUrl)
+		VALUES (?, ?, ?)
 	`
 
-	_, err := s.db.ExecContext(ctx, q,
-		sql.Named("id", url.Id),
-		sql.Named("shortUrl", url.ShortUrl),
-		sql.Named("longUrl", url.LongUrl),
-	)
+	_, err := s.db.ExecContext(ctx, q, url.Id, url.ShortUrl, url.LongUrl)
 
 	return err
 }
