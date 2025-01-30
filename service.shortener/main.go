@@ -9,14 +9,24 @@ import (
 	"syscall"
 
 	"github.com/vhall1/shorturl/service.shortener/common"
+	"github.com/vhall1/shorturl/service.shortener/domain"
 	"github.com/vhall1/shorturl/service.shortener/handler"
+	"github.com/vhall1/shorturl/service.shortener/store"
 )
 
 func main() {
+	// TODO: pull these from a config somewhere else
 	addr := ":8080"
-	mux := http.NewServeMux()
+	db, err := common.NewMysqlConn("root:pw@/shorturl")
+	if err != nil {
+		panic(err)
+	}
 
-	handler.RegisterRoutes(mux)
+	urlStore := store.NewUrlStore(db)
+	urlService := domain.NewUrlService(urlStore)
+
+	mux := http.NewServeMux()
+	handler.RegisterRoutes(mux, urlService)
 
 	srv := &http.Server{
 		Addr: addr,

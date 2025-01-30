@@ -1,7 +1,11 @@
 package handler
 
-import "net/http"
+import (
+	"net/http"
 
-func RegisterRoutes(router *http.ServeMux) {
-	router.Handle("POST /", handlePostShortenUrl())
+	"github.com/vhall1/shorturl/service.shortener/domain"
+)
+
+func RegisterRoutes(router *http.ServeMux, urlService *domain.UrlService) {
+	router.Handle("POST /", handlePostShortenUrl(urlService))
 }
