@@ -13,13 +13,13 @@ type mysqlConf struct {
 	DatabaseUrl string
 }
 
-func NewMysqlConn(addr string) (*sql.DB, error) {
+func NewMysqlConn() (*sql.DB, error) {
 	conf := mysqlConf{}
 	if err := config.Load(&conf); err != nil {
 		return nil, fmt.Errorf("failed to load mysql config: %v", err)
 	}
 
-	db, err := sql.Open("mysql", addr)
+	db, err := sql.Open("mysql", conf.DatabaseUrl)
 	if err != nil {
 		return nil, err
 	}

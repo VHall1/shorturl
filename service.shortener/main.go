@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	db, err := bootstrap.NewMysqlConn("root:pw@/shorturl")
+	db, err := bootstrap.NewMysqlConn()
 	if err != nil {
 		panic(err)
 	}
