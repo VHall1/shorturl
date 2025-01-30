@@ -8,4 +8,5 @@ import (
 
 func RegisterRoutes(router *http.ServeMux, urlService *domain.UrlService) {
 	router.Handle("POST /", handlePostShortenUrl(urlService))
+	router.Handle("GET /s/{shortUrl}", handleGetRedirectUrl(urlService))
 }
