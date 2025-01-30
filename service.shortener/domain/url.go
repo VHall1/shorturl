@@ -31,3 +31,13 @@ func (s *UrlService) ShortenUrl(ctx context.Context, longUrl string) (string, er
 
 	return shortUrl, nil
 }
+
+func (s *UrlService) GetRedirectUrl(ctx context.Context, shortUrl string) (string, error) {
+	longUrl, err := s.urlStore.FindByShortUrl(ctx, shortUrl)
+
+	if err != nil {
+		return "", err
+	}
+
+	return longUrl, nil
+}

@@ -1,8 +1,11 @@
 package handler
 
 import (
+	"context"
 	"encoding/json"
+	"log"
 	"net/http"
+	"time"
 
 	"github.com/vhall1/shorturl/service.shortener/domain"
 )
@@ -17,17 +20,17 @@ func handleGetRedirectUrl(urlService *domain.UrlService) http.Handler {
 			return
 		}
 
-		// ctx, cancel := context.WithTimeout(r.Context(), 2*time.Second)
-		// defer cancel()
+		ctx, cancel := context.WithTimeout(r.Context(), 2*time.Second)
+		defer cancel()
 
-		// shortUrl, err := urlService.ShortenUrl(ctx, req.Url)
-		// if err != nil {
-		// 	log.Printf("got an unexpected error shortening url: %v", err)
-		// 	http.Error(w, "Internal server error", http.StatusInternalServerError)
-		// 	return
-		// }
+		longUrl, err := urlService.GetRedirectUrl(ctx, shortUrl)
+		if err != nil {
+			log.Printf("got an unexpected error getting redirect url: %v", err)
+			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			return
+		}
 
 		w.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(w).Encode(map[string]string{"url": "test.com"})
+		json.NewEncoder(w).Encode(map[string]string{"url": longUrl})
 	})
 }
