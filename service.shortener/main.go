@@ -8,6 +8,7 @@ import (
 	"os/signal"
 	"syscall"
 
+	"github.com/vhall1/shorturl/service.shortener/common"
 	"github.com/vhall1/shorturl/service.shortener/handler"
 )
 
@@ -18,8 +19,9 @@ func main() {
 	handler.RegisterRoutes(mux)
 
 	srv := &http.Server{
-		Addr:    addr,
-		Handler: mux,
+		Addr: addr,
+		// middleware applied to all routes
+		Handler: common.ApplyMiddleware(mux, common.Logger),
 	}
 
 	done := make(chan os.Signal, 1)
