@@ -1,4 +1,23 @@
 services:
+  snowflake:
+    build:
+      context: .
+      dockerfile: ./service.snowflake/Dockerfile
+    ports:
+      - 8001:8080
+
+  shortener:
+    depends_on:
+      - snowflake
+      - mysql
+    build:
+      context: .
+      dockerfile: ./service.shortener/Dockerfile
+    environment:
+      - DATABASE_URL=root:pw@/shorturl
+    ports:
+      - 8000:8080
+
   mysql:
     image: mysql
     volumes:
