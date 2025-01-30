@@ -8,13 +8,12 @@ import (
 )
 
 func main() {
-	addr := ":8080"
 	db, err := bootstrap.NewMysqlConn("root:pw@/shorturl")
 	if err != nil {
 		panic(err)
 	}
 
-	httpServer := bootstrap.NewHttpServer(addr)
+	httpServer := bootstrap.NewHttpServer(":8080")
 
 	// initialise all services
 	urlStore := store.NewUrlStore(db)

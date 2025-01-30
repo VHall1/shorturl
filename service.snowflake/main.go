@@ -7,8 +7,7 @@ import (
 )
 
 func main() {
-	addr := ":8080"
-	httpServer := bootstrap.NewHttpServer(addr)
+	httpServer := bootstrap.NewHttpServer(":8080")
 
 	// initialise all services
 	snowflakeService, err := domain.NewSnowflakeService(0)
