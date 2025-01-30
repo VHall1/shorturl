@@ -1,19 +1,33 @@
 package domain
 
-import "context"
+import (
+	"context"
 
-type Url struct {
-	Id                int64
-	ShortUrl, LongUrl string
+	"github.com/vhall1/shorturl/service.shortener/common"
+	"github.com/vhall1/shorturl/service.shortener/store"
+)
+
+type UrlService struct {
+	urlStore *store.UrlStore
 }
 
-type UrlService struct{}
-
-func NewUrlService() *UrlService {
-	return &UrlService{}
+func NewUrlService(urlStore *store.UrlStore) *UrlService {
+	return &UrlService{urlStore: urlStore}
 }
 
 // TODO: Implement this
 func (s *UrlService) ShortenUrl(ctx context.Context, longUrl string) (string, error) {
-	return "14q60P", nil
+	shortUrl := "14q60P"
+
+	err := s.urlStore.Create(ctx, &common.Url{
+		Id:       1,
+		ShortUrl: shortUrl,
+		LongUrl:  longUrl,
+	})
+
+	if err != nil {
+		return "", err
+	}
+
+	return shortUrl, nil
 }

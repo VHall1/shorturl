@@ -2,13 +2,17 @@ package domain
 
 import (
 	"context"
+	"database/sql"
 	"testing"
+
+	"github.com/vhall1/shorturl/service.shortener/store"
 )
 
 func TestUrlService(t *testing.T) {
-	s := NewUrlService()
+	s := store.NewUrlStore(&sql.DB{})
+	svc := NewUrlService(s)
 
-	shortUrl, err := s.ShortenUrl(context.Background(), "example.com")
+	shortUrl, err := svc.ShortenUrl(context.Background(), "example.com")
 	if err != nil {
 		t.Fatalf("expected no error, got %v", err)
 	}
