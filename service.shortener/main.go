@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/vhall1/shorturl/lib/bootstrap"
 	"github.com/vhall1/shorturl/service.shortener/common"
 	"github.com/vhall1/shorturl/service.shortener/domain"
 	"github.com/vhall1/shorturl/service.shortener/handler"
@@ -15,15 +16,15 @@ func main() {
 		panic(err)
 	}
 
-	httpServer := newHttpServer(addr)
+	httpServer := bootstrap.NewHttpServer(addr)
 
 	// initialise all services
 	urlStore := store.NewUrlStore(db)
 	urlService := domain.NewUrlService(urlStore)
 
 	// register routes
-	handler.RegisterRoutes(httpServer.mux, urlService)
+	handler.RegisterRoutes(httpServer.Mux, urlService)
 
 	// listen and serve
-	httpServer.start()
+	httpServer.Start()
 }
