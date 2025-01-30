@@ -37,9 +37,8 @@ func (s *UrlService) ShortenUrl(ctx context.Context, longUrl string) (string, er
 	}
 
 	err = s.urlStore.Create(ctx, &common.Url{
-		Id: id,
-		// TODO: implement base62 encode
-		ShortUrl: "short-url-here",
+		Id:       id,
+		ShortUrl: common.Base62(id),
 		LongUrl:  longUrl,
 	})
 
