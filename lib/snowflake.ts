@@ -3,6 +3,7 @@ const MACHINE_ID_BITS = 10; // machine id bits
 const SEQUENCE_BITS = 12; // sequence bits
 const MACHINE_ID_SHIFT = SEQUENCE_BITS;
 const TIMESTAMP_SHIFT = SEQUENCE_BITS + MACHINE_ID_BITS;
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const MAX_MACHINE_ID = -1 ^ (-1 << MACHINE_ID_BITS);
 const MAX_SEQUENCE = -1 ^ (-1 << SEQUENCE_BITS);
 
