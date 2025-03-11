@@ -4,7 +4,9 @@ services:
       - db
     build: ./
     environment:
-      DATABASE_URL: postgresql://postgres:example@localhost:5432
+      DATABASE_URL: postgresql://postgres:example@db:5432
+    ports:
+      - 3000:3000
 
   db:
     image: postgres
