@@ -1,5 +1,5 @@
+import { Card } from "@/components/ui/card";
 import { LinkIcon } from "lucide-react";
-import Link from "next/link";
 import "./globals.css";
 
 export default function RootLayout({
@@ -9,16 +9,23 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="bg-background font-sans antialiased">
-        <header className="fixed top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-          <div className="h-14 flex items-center container mx-auto px-4 sm:px-6">
-            <Link href="/" className="flex items-center">
-              <LinkIcon className="size-4 mr-2" />
-              <h1 className="text-lg font-bold">ShortURL</h1>
-            </Link>
-          </div>
-        </header>
-        <main className="min-h-svh pt-24 container mx-auto px-4 sm:px-6">{children}</main>
+      <body className="font-sans antialiased">
+        <main className="min-h-svh bg-gradient-to-b from-blue-100 to-white flex flex-col items-center justify-center p-4">
+          <Card className="w-full max-w-2xl p-8 space-y-8">
+            {/* card header */}
+            <div className="text-center space-y-2">
+              <LinkIcon className="h-12 w-12 text-blue-500 mx-auto" />
+              <h1 className="text-3xl font-bold text-gray-800">
+                URL Shortener
+              </h1>
+              <p className="text-gray-600">
+                Simplify your links with our powerful URL shortening service
+              </p>
+            </div>
+
+            {children}
+          </Card>
+        </main>
       </body>
     </html>
   );
