@@ -9,9 +9,5 @@ export async function GET(
     where: { shortUrl: (await params).id },
   });
 
-  if (!url) {
-    return redirect("/", RedirectType.replace);
-  }
-
-  return redirect(url.longUrl, RedirectType.push);
+  return redirect(url?.longUrl ?? "/", RedirectType.replace);
 }
