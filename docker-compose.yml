@@ -1,8 +1,4 @@
 services:
-  next-app:
-    depends_on:
-      - db
-    build: ./
 
   db:
     image: postgres
@@ -18,3 +14,4 @@ services:
       POSTGRES_PASSWORD: example
     ports:
       - 5432:5432
+

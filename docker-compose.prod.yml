@@ -1,4 +1,10 @@
 services:
+  next-app:
+    depends_on:
+      - db
+    build: ./
+    environment:
+      DATABASE_URL: postgresql://postgres:example@localhost:5432
 
   db:
     image: postgres
@@ -14,4 +20,3 @@ services:
       POSTGRES_PASSWORD: example
     ports:
       - 5432:5432
-
