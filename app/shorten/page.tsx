@@ -8,19 +8,37 @@ export default async function Page({
 }: {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
-  const { url } = await searchParams;
+  let { url } = await searchParams;
 
   if (!url) {
     return redirect("/");
   }
 
-  const results = await getShortUrl(
-    // searchParams can be composed into an array if the same key is defined multiple times in the request URL.
-    // Should be relatively safe to index the array here, as it takes at least 2 elements for `url` to come through as an array.
-    Array.isArray(url) ? url[0] : url
-  );
+  // searchParams can be composed into an array if the same key is defined multiple times in the request URL.
+  // Should be relatively safe to index the array here, as it takes at least 2 elements for `url` to come through as an array.
+  if (Array.isArray(url)) {
+    url = url[0];
+  }
+
+  if (!isValidHttpUrl(url)) {
+    throw "Invalid URL";
+  }
+
+  const results = await getShortUrl(url);
 
   return <p>{results}</p>;
+}
+
+function isValidHttpUrl(string: string): boolean {
+  let url: URL;
+
+  try {
+    url = new URL(string);
+  } catch {
+    return false;
+  }
+
+  return url.protocol === "http:" || url.protocol === "https:";
 }
 
 async function getShortUrl(longUrl: string): Promise<string> {
