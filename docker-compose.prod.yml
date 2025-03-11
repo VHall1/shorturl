@@ -2,10 +2,7 @@ services:
   next-app:
     depends_on:
       - db
-    build:
-      context: .
-      args:
-        DATABASE_URL: postgresql://postgres:example@db:5432
+    build: ./
     environment:
       DATABASE_URL: postgresql://postgres:example@db:5432
     ports:
