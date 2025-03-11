@@ -4,11 +4,13 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "prisma generate && next build",
+    "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "compose": "docker compose up -d --build",
-    "compose:prod": "docker compose -f docker-compose.prod.yml up -d --build"
+    "compose:prod": "docker compose -f docker-compose.prod.yml up -d --build",
+    "prisma:generate": "prisma generate",
+    "prisma:deploy": "prisma migrate deploy"
   },
   "dependencies": {
     "@prisma/client": "^6.4.1",
