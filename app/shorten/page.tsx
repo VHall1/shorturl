@@ -1,7 +1,10 @@
+import { Button } from "@/components/ui/button";
 import { tob62 } from "@/lib/base62";
 import { db } from "@/lib/db";
 import { snowflake } from "@/lib/snowflake";
+import Link from "next/link";
 import { redirect } from "next/navigation";
+import { ShortUrlBox } from "./short-url-box";
 
 export default async function Page({
   searchParams,
@@ -24,9 +27,26 @@ export default async function Page({
     throw "Invalid URL";
   }
 
-  const results = await getShortUrl(url);
+  const shortUrl = await getShortUrl(url);
 
-  return <p>{results}</p>;
+  return (
+    <div>
+      <ShortUrlBox shortUrl={shortUrl} />
+      <Button variant="outline" className="mt-2 w-full lg:w-auto" asChild>
+        <Link href="/">Shorten another URL</Link>
+      </Button>
+
+      <div className="mt-4">
+        Long URL:
+        <Link
+          className="text-primary underline-offset-4 hover:underline ml-1"
+          href={url}
+        >
+          {url}
+        </Link>
+      </div>
+    </div>
+  );
 }
 
 function isValidHttpUrl(string: string): boolean {
